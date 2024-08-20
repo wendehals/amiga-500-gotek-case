@@ -10,9 +10,7 @@ wall_thickness = 3;
 module Top_front(width) {
     difference() {
         union() {
-            // top
-            translate([wall_thickness + 2, wall_thickness + 2, height - wall_thickness])
-            cube([width- 2*wall_thickness - 4, depth - wall_thickness - 2, wall_thickness]);
+            Top_plate(width, true);
 
             // left side
             translate([0, wall_thickness + 2, 0])
@@ -105,7 +103,7 @@ module Top_front(width) {
             cylinder(h = wall_thickness - 1.5, r = 5);
         }
 
-        translate([width - 10.5, -0.5, -6])
+        translate([width - 10 - 0.5, -0.5, -6])
         cube([11, 11, 6]);
 
         translate([width - wall_thickness - 8, wall_thickness, -0.5])
@@ -115,43 +113,61 @@ module Top_front(width) {
         cube([6, 6, 2.5]);
     }
 
-    // left back screw hole
-    difference() {
-        translate([20, depth - 5, 0])
-        cylinder(h = 4, d = 8);
+    // back screw holes
+    Back_screw_hole(12.5);
+    Back_screw_hole(width - 12.5);
 
-        translate([20, depth - 5, -0.5])
-        cylinder(h = 4.5, d = 2);
+    // front screw holes
+    Front_screw_hole(12.5);
+    Front_screw_hole(width - 12.5);
+}
+
+module Top_plate(width, add_gotek) {
+    difference() {
+        translate([wall_thickness + 2, wall_thickness + 2, height - wall_thickness])
+        cube([width- 2*wall_thickness - 4, depth - wall_thickness - 2, wall_thickness]);
+
+        if (add_gotek) {
+            // Gotek knob cutout
+            translate([28, depth - 34, wall_thickness - 1])
+            cylinder(h = wall_thickness + 2, d = 6);
+
+            // Gotek LED cutout
+            translate([45, depth - 30, wall_thickness - 1])
+            cylinder(h = wall_thickness + 2, d = 3);
+
+            // Gotek buttons cutouts
+            translate([45, depth - 38, wall_thickness - 1])
+            cylinder(h = wall_thickness + 2, d = 4);
+            translate([53, depth - 38, wall_thickness - 1])
+            cylinder(h = wall_thickness + 2, d = 4);
+
+            // Gotek display cutout
+            translate([width - 47, depth - 40, height - wall_thickness - 1])
+            cube([24, 12, wall_thickness + 2]);
+        }
     }
+}
 
-    // right back screw hole
+module Back_screw_hole(x) {
     difference() {
-        translate([width - 20, depth - 5, 0])
-        cylinder(h = 4, d = 8);
+        translate([x, depth - 5.5, -0.8])
+        cylinder(h = 5, d = 8);
 
-        translate([width - 20, depth - 5, -0.5])
-        cylinder(h = 4.5, d = 2);
-    }
-
-    // left front screw hole
-    difference() {
-        translate([20, 10, 0])
-        cylinder(h = 7.3, d = 8);
-
-        translate([20, 10, -0.5])
+        translate([x, depth - 5.5, -1.5])
         cylinder(h = 5.5, d = 2);
     }
+}
 
-    // right front screw hole
+module Front_screw_hole(x) {
     rotate([-15, 0, 0])
     difference() {
-        translate([width - 20, 10, 0])
+        translate([x, 10, 0])
         cylinder(h = 7.3, d = 8);
 
-        translate([width - 20, 10, -0.5])
+        translate([x, 10, -0.5])
         cylinder(h = 5.5, d = 2);
     }
-
-}
+}    
 
 Top_front(width);

@@ -1,7 +1,7 @@
 $fa = 1;
 $fs = 0.4;
 
-width = 151.5;
+width = 113.5;
 
 use<top-back.scad>
 use<top-middle.scad>

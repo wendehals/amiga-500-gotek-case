@@ -6,7 +6,7 @@ depth = 27;
 
 wall_thickness = 3;
 
-module Top_middle(width) {
+module Top_middle(width, logo_right=true) {
     difference() {
         union() {
             difference() {
@@ -49,13 +49,23 @@ module Top_middle(width) {
                 cube([6, depth + 4, 6]);
 
                 // logo recess
-                translate([width - 19 - 67, 6.5, 35.5])
-                cube([67, 14, 1]);
+                if (logo_right) {
+                    translate([width - 19 - 67, 6.5, 35.5])
+                    cube([67, 14, 1]);
+                } else {
+                    translate([19, 6.5, 35.5])
+                    cube([67, 14, 1]);
+                }
             }
 
             // Commodore logo
-            translate([width - 73, 16.5, 34])
-            import("Commodore_logo_v7.stl");
+            if (logo_right) {
+                translate([width - 73, 16.5, 34])
+                import("Commodore_logo_v7.stl");
+            } else {
+                translate([32, 16.5, 34])
+                import("Commodore_logo_v7.stl");
+            }
 
             // left rounded corner
             translate([5, depth, 31])
@@ -97,7 +107,7 @@ module Top_middle(width) {
         cube([width + 2, 4, 7]);
     }
 
-    // front left screw hole
+    // back left screw hole
     rotate([-15, 0, 0])
     difference() {
         union() {
@@ -115,7 +125,7 @@ module Top_middle(width) {
         cylinder(h = 7, d = 2);
     }    
 
-    // front right screw hole
+    // back right screw hole
     rotate([-15, 0, 0])
     difference() {
         union() {
@@ -131,6 +141,40 @@ module Top_middle(width) {
 
         translate([width - 12.5, 23.5, 26])
         cylinder(h = 7, d = 2);
+    }
+
+    // left front screw hole
+    translate([12.5, 4, 23])
+    cylinder(h = 10, d = 8);
+
+    difference() {
+        union() {
+            translate([8.5, -6, 23])
+            cube([8, 10, 5]);
+
+            translate([12.5, -6, 23])
+            cylinder(h = 5, d = 8);
+        }
+
+        translate([12.5, -6, 22.5])
+        cylinder(h = 6, d = 2);
+    }
+
+    // right front screw hole
+    translate([width - 12.5, 4, 23])
+    cylinder(h = 10, d = 8);
+
+    difference() {
+        union() {
+            translate([width - 16.5, -6, 23])
+            cube([8, 10, 5]);
+
+            translate([width - 12.5, -6, 23])
+            cylinder(h = 5, d = 8);
+        }
+
+        translate([width - 12.5, -6, 22.5])
+        cylinder(h = 6, d = 2);
     }
 }
 
