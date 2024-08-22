@@ -6,6 +6,7 @@ width = 113.5;
 use<top-back.scad>
 use<top-middle.scad>
 use<top-front.scad>
+use<switch.scad>
 
 translate([width, 0, 0])
 mirror([1,0,0])
