@@ -40,12 +40,12 @@ module Top_middle(width, logo_right=true) {
                     polygon(points=[[0, 0], [-27.5, 0], [-30, -11], [-27.75, -19], [6.5, -28.4], [7, -26]]);
                 }
 
-                // left top corner
+                // left top edge
                 translate([-1, -2, 31])
                 cube([6, depth + 4, 6]);
 
-                // right top corner
-                translate([width - wall_thickness - 1, -2, 31])
+                // top right edge
+                translate([width - wall_thickness - 2, -2, 31])
                 cube([6, depth + 4, 6]);
 
                 // logo recess
@@ -67,33 +67,8 @@ module Top_middle(width, logo_right=true) {
                 import("Commodore_logo_v7.stl");
             }
 
-            // left rounded corner
-            translate([5, depth, 31])
-            rotate([90, 0, 0])
-            difference() {
-                translate([0, 0, -2])
-                cylinder(h = depth + 4, r = 5);
-
-                translate([0, -6, -3])
-                cube([7, 12, 33]);
-
-                translate([-6, -6, -3])
-                cube([7, 6, 33]);
-            }
-
-            // right rounded corner
-            translate([width - 5, depth, 31])
-            rotate([90, 90, 0])
-            difference() {
-                translate([0, 0, -2])
-                cylinder(h = depth + 4, r = 5);
-
-                translate([0, -6, -3])
-                cube([7, 12, 33]);
-
-                translate([-6, -6, -3])
-                cube([7, 6, 33]);
-            }
+            Rounded_edge(5, 0);
+            Rounded_edge(width - 5, 90);
         }
 
         // back slope
@@ -107,75 +82,84 @@ module Top_middle(width, logo_right=true) {
         cube([width + 2, 4, 7]);
     }
 
-    // back left screw hole
+    Back_screw_hole(12.5);
+    Back_screw_hole(width - 12.5);
+
+    Middle_screw_hole(0);
+    mirror([1, 0, 0])
+    Middle_screw_hole(- width);
+
+    Front_screw_hole(12.5);
+    Front_screw_hole(width - 12.5);
+}
+
+module Rounded_edge(x, rotation_y) {
+    translate([x, depth, 31])
+    rotate([90, rotation_y, 0])
+    difference() {
+        translate([0, 0, -2])
+        cylinder(h = depth + 4, r = 5);
+
+        translate([0, -6, -3])
+        cube([7, 12, 33]);
+
+        translate([-6, -6, -3])
+        cube([7, 6, 33]);
+    }
+}
+
+module Back_screw_hole(x) {
     rotate([-15, 0, 0])
     difference() {
         union() {
-            translate([12.5, 23.5, 27])
+            translate([x, 23.5, 27])
             cylinder(h = 5, d = 8);
 
-            translate([8.5, 12.5, 32])
+            translate([x- 4, 12.5, 32])
             cube([8, 5, 7]);
 
-            translate([8.5, 12.5, 27])
+            translate([x - 4, 12.5, 27])
             cube([8, 11, 5]);
         }
 
-        translate([12.5, 23.5, 26])
+        translate([x, 23.5, 26])
         cylinder(h = 7, d = 2);
     }    
+}
 
-    // back right screw hole
+module Middle_screw_hole(x) {
     rotate([-15, 0, 0])
     difference() {
         union() {
-            translate([width - 12.5, 23.5, 27])
-            cylinder(h = 5, d = 8);
+            translate([x + wall_thickness, 10, 9.1])
+            cube([4, 8, 5]);
 
-            translate([width - 16.5, 12.5, 32])
-            cube([8, 5, 7]);
-
-            translate([width - 16.5, 12.5, 27])
-            cube([8, 11, 5]);
-        }
-
-        translate([width - 12.5, 23.5, 26])
-        cylinder(h = 7, d = 2);
-    }
-
-    // left front screw hole
-    translate([12.5, 4, 23])
-    cylinder(h = 10, d = 8);
-
-    difference() {
-        union() {
-            translate([8.5, -6, 23])
-            cube([8, 10, 5]);
-
-            translate([12.5, -6, 23])
+            translate([x + wall_thickness + 4, 14, 9.1])
             cylinder(h = 5, d = 8);
         }
 
-        translate([12.5, -6, 22.5])
+        translate([x + wall_thickness + 4, 14, 8])
         cylinder(h = 6, d = 2);
     }
+}    
 
-    // right front screw hole
-    translate([width - 12.5, 4, 23])
+module Front_screw_hole(x) {
+    translate([x, 4, 23])
     cylinder(h = 10, d = 8);
 
     difference() {
         union() {
-            translate([width - 16.5, -6, 23])
+            translate([x - 4, -6, 23])
             cube([8, 10, 5]);
 
-            translate([width - 12.5, -6, 23])
+            translate([x, -6, 23])
             cylinder(h = 5, d = 8);
         }
 
-        translate([width - 12.5, -6, 22.5])
+        translate([x, -6, 22.5])
         cylinder(h = 6, d = 2);
     }
 }
+
 
 Top_middle(width);
