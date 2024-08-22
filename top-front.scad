@@ -10,7 +10,7 @@ wall_thickness = 3;
 module Top_front(width) {
     difference() {
         union() {
-            Top_plate(width, true);
+            Top_plate(width, true, true);
 
             // left side
             translate([0, wall_thickness + 2, 0])
@@ -122,12 +122,16 @@ module Top_front(width) {
     Front_screw_hole(width - 12.5);
 }
 
-module Top_plate(width, add_gotek) {
+module Top_plate(width, add_gotek, kickstart) {
     difference() {
         translate([wall_thickness + 2, wall_thickness + 2, height - wall_thickness])
         cube([width- 2*wall_thickness - 4, depth - wall_thickness - 2, wall_thickness]);
 
         if (add_gotek) {
+            translate([22, depth - 25, height - 0.5])
+            linear_extrude(1)
+            text("Gotek", size = 5, font = "Arial");
+
             // Gotek knob cutout
             translate([28, depth - 34, wall_thickness - 1])
             cylinder(h = wall_thickness + 2, d = 6);
@@ -145,6 +149,12 @@ module Top_plate(width, add_gotek) {
             // Gotek display cutout
             translate([width - 47, depth - 40, height - wall_thickness - 1])
             cube([24, 12, wall_thickness + 2]);
+        }
+        
+        if (kickstart) {
+            translate([22, depth - 50, height - 0.5])
+            linear_extrude(1)
+            text("Kickstart", size = 5, font = "Arial");
         }
     }
 }
