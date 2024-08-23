@@ -18,4 +18,4 @@ Top_middle(width);
 
 translate([0, -173.3, -21])
 rotate([15, 0, 0])
-Top_front(width);
+Top_front(width, true, true, true, true);

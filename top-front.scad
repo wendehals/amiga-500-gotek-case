@@ -7,10 +7,15 @@ height = 6.5;
 
 wall_thickness = 3;
 
-module Top_front(width) {
+kickstart_label_1 = "1.3";
+kickstart_label_2 = "3.1";
+
+use<switch.scad>
+
+module Top_front(width, add_gotek = false, kickstart = false, bootselector = false, osd = false) {
     difference() {
         union() {
-            Top_plate(width, true, true);
+            Top_plate(width, add_gotek, kickstart, bootselector, osd);
 
             // left side
             translate([0, wall_thickness + 2, 0])
@@ -122,10 +127,22 @@ module Top_front(width) {
     Front_screw_hole(width - 12.5);
 }
 
-module Top_plate(width, add_gotek, kickstart) {
+module Top_plate(width, add_gotek = false, kickstart = false, bootselector = false, osd = false) {
     difference() {
-        translate([wall_thickness + 2, wall_thickness + 2, height - wall_thickness])
-        cube([width- 2*wall_thickness - 4, depth - wall_thickness - 2, wall_thickness]);
+        union() {
+            translate([wall_thickness + 2, wall_thickness + 2, height - wall_thickness])
+            cube([width- 2*wall_thickness - 4, depth - wall_thickness - 2, wall_thickness]);
+
+            if (kickstart) {
+                translate([35, depth - 70, height - wall_thickness])
+                Switch_screwholes();
+            }
+
+            if (bootselector) {
+                translate([75, depth - 70, height - wall_thickness])
+                Switch_screwholes();
+            }
+        }
 
         if (add_gotek) {
             translate([22, depth - 25, height - 0.5])
@@ -152,9 +169,46 @@ module Top_plate(width, add_gotek, kickstart) {
         }
         
         if (kickstart) {
-            translate([22, depth - 50, height - 0.5])
+            translate([22, depth - 55, height - 0.5])
             linear_extrude(1)
             text("Kickstart", size = 5, font = "Arial");
+
+            translate([25, depth - 61, height - 0.5])
+            linear_extrude(1)
+            text(kickstart_label_1, size = 3, font = "Arial");
+
+            translate([25, depth - 70, height - 0.5])
+            linear_extrude(1)
+            text(kickstart_label_2, size = 3, font = "Arial");
+
+            translate([35, depth - 70, height - wall_thickness])
+            Switch_hole(height - wall_thickness + 1);
+        }
+
+        if (bootselector) {
+            translate([62, depth - 55, height - 0.5])
+            linear_extrude(1)
+            text("Boot Drive", size = 5, font = "Arial");
+
+            translate([65, depth - 61, height - 0.5])
+            linear_extrude(1)
+            text("DF0", size = 3, font = "Arial");
+
+            translate([65, depth - 70, height - 0.5])
+            linear_extrude(1)
+            text("DF1", size = 3, font = "Arial");
+
+            translate([75, depth - 70, height - wall_thickness])
+            Switch_hole(height - wall_thickness + 1);
+        }
+
+        if (osd) {
+            translate([22, depth - 85, height - 0.5])
+            linear_extrude(1)
+            text("OSD", size = 5, font = "Arial");
+        
+            translate([28, depth - 91, height - wall_thickness - 0.5])
+            cylinder(h = wall_thickness + 1, d = 6);
         }
     }
 }
@@ -180,4 +234,4 @@ module Front_screw_hole(x) {
     }
 }    
 
-Top_front(width);
+Top_front(width, true, true, true, true);
