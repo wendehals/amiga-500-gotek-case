@@ -60,31 +60,31 @@ module Top_back(width) {
                 union() {
                     Back_ribs(width);
 
-                    // left mounting cylinder
-                    difference() {
-                        translate([25, 142, height - 24])
-                        cylinder(h = 6.5, d = 8);
-
-                        translate([21, 142, height - 25])
-                        cube([10, 5, 8]);
-                    }
-
-                    // right mounting cylinder
-                    difference() {
-                        translate([width - 25, 142, height - 24])
-                        cylinder(h = 6.5, d = 8);
-
-                        translate([width - 29, 142, height - 25])
-                        cube([10, 5, 8]);
-                    }
+//                    // left mounting cylinder
+//                    difference() {
+//                        translate([24.5, 142, height - 24])
+//                        cylinder(h = 6.5, d = 8);
+//
+//                        translate([20.5, 142, height - 25])
+//                        cube([10, 5, 8]);
+//                    }
+//
+//                    // right mounting cylinder
+//                    difference() {
+//                        translate([width - 24.5, 142, height - 24])
+//                        cylinder(h = 6.5, d = 8);
+//
+//                        translate([width - 28.5, 142, height - 25])
+//                        cube([10, 5, 8]);
+//                    }
                 }
 
                 // left screw hole
-                translate([25, 142, height - 25])
+                translate([24.5, 144, height - 25])
                 cylinder(h = wall_thickness + 2, d = 2);
 
                 // right screw hole
-                translate([width - 25, 142, height - 25])
+                translate([width - 24.5, 144, height - 25])
                 cylinder(h = wall_thickness + 2, d = 2);
             }
         }
